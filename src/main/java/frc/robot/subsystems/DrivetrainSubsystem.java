@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
@@ -19,20 +20,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
   PWMSparkMax m_RightMotor1 = new PWMSparkMax(0);
   PWMSparkMax m_RightMotor2 = new PWMSparkMax(1);
 
-  //Make 3 digitalinputs for limit switches
-  DigitalInput rightSwitch = new DigitalInput(0);
+  //temporary IDS for testing since Right Limit Switch is broken, we assigned that Right limit switch ID to the rotate limit switch being we already know the rotate limit switch works, for the sake of testing and till we get another limit switch, we are going to test the right and left limit switches, since both limit switches work, but you need to test if the functionality works. 
+  DigitalInput rightSwitch = new DigitalInput(2);
   DigitalInput leftSwitch = new DigitalInput(1);
-  DigitalInput rotateSwitch = new DigitalInput(2);
+  // DigitalInput rotateSwitch = new DigitalInput(0);
 
+  
+  //Old correct IDS assigned
+  // DigitalInput rightSwitch = new DigitalInput(0);
+  // DigitalInput leftSwitch = new DigitalInput(1);
+  // DigitalInput rotateSwitch = new DigitalInput(2);
+  
 
-  /** Creates a new ExampleSubsystem. */
   public DrivetrainSubsystem() {}
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
+ 
   public Command exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
@@ -54,16 +56,25 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
+    System.out.println("Left Switch Condition: " + leftSwitch.get());
+    //System.out.println("Right Switch Condition: " + rightSwitch.get());
 
-    if (rotateSwitch.get()) {
-      m_LeftMotor1.set(1);
-      m_LeftMotor2.set(1);
-      m_RightMotor1.set(-1);
-      m_RightMotor2.set(-1);
-    }  else {
+    //If prints true when not pressed, but false when pressed use !
+    //If prints false when not pressed, but true when pressed keep normal
+
+    // if (rotateSwitch.get()) {
+
+    //   System.out.println("Rotate Pressed");
+    //   m_LeftMotor1.set(Constants.OperatorConstants.kDriveSpeed);
+    //   m_LeftMotor2.set(Constants.OperatorConstants.kDriveSpeed);
+    //   m_RightMotor1.set(Constants.OperatorConstants.kDriveSpeed);
+    //   m_RightMotor2.set(Constants.OperatorConstants.kDriveSpeed);
+    // }  else {
       if (rightSwitch.get()) {
-      m_RightMotor1.set(1);
-      m_RightMotor2.set(1);
+      System.out.println("Right Pressed");
+      m_RightMotor1.set(Constants.OperatorConstants.kDriveSpeed);
+      m_RightMotor2.set(Constants.OperatorConstants.kDriveSpeed);
       }else {
       m_RightMotor1.set(0);
       m_RightMotor2.set(0); 
@@ -71,24 +82,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
       if (leftSwitch.get()) {
-      m_LeftMotor1.set(1);
-      m_LeftMotor2.set(1);
+      System.out.println("Left Pressed");
+      m_LeftMotor1.set(-Constants.OperatorConstants.kDriveSpeed);
+      m_LeftMotor2.set(-Constants.OperatorConstants.kDriveSpeed);
       } else {
       m_LeftMotor1.set(0);
       m_LeftMotor2.set(0);
       }
-    }
+    // }
 
   
 
 
-    
-    // This method will be called once per scheduler run
-    //3 if statements checking limitswitch.get() for each
-
-    //If pressed turn on both right motors
-    //if pressed turn on both left motors
-    //if pressed overwrite the state of left and right and make them in opposite direction
+  
 
   }
 
